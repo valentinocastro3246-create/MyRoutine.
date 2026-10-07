@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mi plan del día</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+  <h1>Mi plan del día</h1>
+  <p class="sub" id="fecha"></p>
+  <nav role="tablist">
+    <button role="tab" data-tab="plan" aria-selected="true">Horario</button>
+    <button role="tab" data-tab="agua" aria-selected="false">Agua</button>
+    <button role="tab" data-tab="cal" aria-selected="false">Calorías</button>
+  </nav>
+
+  <section id="plan">
+    <div class="days" id="days" role="group" aria-label="Día de la semana"></div>
+    <div class="card">
+      <h2>Editar bloque</h2>
+      <div class="form">
+        <label style="flex-basis:100%">Actividad<input id="e-t" placeholder="Ej: Clases, Gimnasio, Leer"></label>
+        <label>Categoría<select id="e-c"></select></label>
+        <label>Desde<select id="e-a"></select></label>
+        <label>Hasta<select id="e-b"></select></label>
+      </div>
+      <div class="form" style="margin-top:10px">
+        <button class="btn" data-act="guardar">Guardar bloque</button>
+        <button class="btn alt" data-act="borrar">Borrar bloque</button>
+      </div>
+      <p class="mut" style="margin:10px 0 0">Tocá una hora de la tabla para empezar a editarla.</p>
+    </div>
+    <div class="card">
+      <h2>Mis hobbies</h2>
+      <div class="chips" id="hobbies"></div>
+      <div class="form" style="margin-top:10px">
+        <label>Nuevo hobby<input id="h-n" placeholder="Ej: Dibujar"></label>
+        <button class="btn alt" data-act="addhobby">Agregar</button>
+      </div>
+      <p class="mut" style="margin:10px 0 0">Tocá un hobby para cargarlo en el editor.</p>
+    </div>
+    <div class="card">
+      <div class="form" style="margin-bottom:12px;justify-content:space-between;align-items:center">
+        <span class="mut" style="flex:1 1 220px">Arrastrá una tarjeta para moverla de hora. Estirá el borde de abajo para cambiar cuánto dura. En el celular, agarrala del ícono ⠿.</span>
+        <button class="btn alt" data-act="undo">Deshacer</button>
+      </div>
+      <div id="grid"></div>
+      <div class="tot" id="tot" style="margin-top:12px"></div>
+    </div>
+    <div class="card">
+      <h2>Copiar este día</h2>
+      <div class="form">
+        <label>Copiar a<select id="cp-to">
+          <option value="lv">Lunes a viernes</option>
+          <option value="fs">Sábado y domingo</option>
+          <option value="all">Todos los días</option>
+        </select></label>
+        <button class="btn alt" data-act="copiar">Copiar</button>
+      </div>
+      <p class="mut" id="cp-n" style="margin:10px 0 0">Reemplaza el horario de los días elegidos.</p>
+    </div>
+  </section>
+
+  <section id="agua" hidden>
+    <div class="card">
+      <div class="big"><span id="w-v">0</span> <small>ml de <span id="w-g"></span></small></div>
+      <div class="bar"><div id="w-b" style="background:var(--water);width:0"></div></div>
+      <div class="form">
+        <button class="btn" data-act="w" data-v="250">+ 250 ml</button>
+        <button class="btn" data-act="w" data-v="500">+ 500 ml</button>
+        <button class="btn alt" data-act="wundo">Deshacer último</button>
+      </div>
+      <div class="form" style="margin-top:12px">
+        <label>Otra cantidad (ml)<input id="w-c" type="number" inputmode="numeric" min="1"></label>
+        <button class="btn alt" data-act="wcustom">Sumar</button>
+        <label>Meta diaria (ml)<input id="w-goal" type="number" inputmode="numeric" min="500"></label>
+      </div>
+      <p class="mut" id="w-n" style="margin:12px 0 0"></p>
+    </div>
+  </section>
+
+  <section id="cal" hidden>
+    <div class="card">
+      <div class="big"><span id="k-v">0</span> <small>kcal de <span id="k-g"></span></small></div>
+      <div class="bar"><div id="k-b" style="background:var(--acc);width:0"></div></div>
+      <p class="mut" id="k-n" style="margin:0"></p>
+    </div>
+    <div class="card">
+      <h2>Buscar alimento</h2>
+      <div class="form">
+        <label style="flex-basis:100%">Alimento<input id="s-q" type="search" placeholder="Ej: manzana, milanesa, mate"></label>
+        <label>Cantidad (porciones)<input id="s-n" type="number" inputmode="decimal" min="0.25" step="0.25" value="1"></label>
+      </div>
+      <ul class="list res" id="res"></ul>
+      <p class="mut" style="margin:10px 0 0">Valores aproximados por porción. Varían según la marca y la preparación.</p>
+    </div>
+    <div class="card">
+      <h2>Agregar a mano</h2>
+      <div class="form">
+        <label style="flex-basis:100%">Comida<input id="f-n" placeholder="Ej: Milanesa con puré"></label>
+        <label>Calorías (kcal)<input id="f-k" type="number" inputmode="numeric" min="0"></label>
+        <button class="btn" data-act="addfood">Agregar</button>
+      </div>
+      <ul class="list" id="foods"></ul>
+      <div class="form" style="margin-top:14px">
+        <label>Meta diaria (kcal)<input id="k-goal" type="number" inputmode="numeric" min="500"></label>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
